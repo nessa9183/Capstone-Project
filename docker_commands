@@ -1,0 +1,22 @@
+## Docker commands used to build the application 
+# TODO: insert the docker build command
+docker build -t techtrends .
+
+
+## Docker commands used to run the application
+# TODO: insert the docker run command
+docker run -d -p 7111:3111 techtrends
+
+## Docker commands used to get the application logs
+# TODO: insert the docker logs command
+# docker logs <container_id>
+docker logs 4b69b56f0cdd
+
+## Logs from the container running the TechTrends application
+# TODO: paste logs from the Docker container 
+
+ * 	Serving Flask app "app" (lazy loading)                                                                                
+ * 	Environment: production 
+	WARNING: This is a development server. Do not use it in a production deployment.                                        
+ 	Use a production WSGI server instead.                                                                                 
+ * 	Debug mode: off                                                                                                      INFO:werkzeug: * Running on http://0.0.0.0:3111/ (Press CTRL+C to quit)                                                 INFO:werkzeug:172.17.0.1 - - [09/Jun/2021 18:53:51] "GET / HTTP/1.1" 200 -                                              INFO:app:09/06/2021 18:53:53 : Article "2020 CNCF Annual Report" retrieved !                                            INFO:werkzeug:172.17.0.1 - - [09/Jun/2021 18:53:53] "GET /1 HTTP/1.1" 200 -                                             INFO:app:09/06/2021 18:53:56 : Non-existing article accessed                                                            INFO:werkzeug:172.17.0.1 - - [09/Jun/2021 18:53:56] "GET /9 HTTP/1.1" 404 -                                             INFO:werkzeug:172.17.0.1 - - [09/Jun/2021 18:53:59] "GET /create HTTP/1.1" 200 -                                        INFO:app:09/06/2021 19:09:38 : New article with title "Test" created !                                                  INFO:werkzeug:172.17.0.1 - - [09/Jun/2021 19:09:38] "POST /create HTTP/1.1" 302 -                                       INFO:werkzeug:172.17.0.1 - - [09/Jun/2021 19:09:38] "GET / HTTP/1.1" 200 -  
