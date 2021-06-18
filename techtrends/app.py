@@ -4,6 +4,7 @@ from flask import Flask, jsonify, json, render_template, request, url_for, redir
 from werkzeug.exceptions import abort
 from datetime import datetime
 import logging
+import sys 
 
 connection_count = 0
 # Function to get a database connection.
@@ -41,20 +42,16 @@ def index():
 def post(post_id):
         post = get_post(post_id)
         if post is None:
-            app.logger.info('{0} : Non-existing article accessed'.format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
+            app.logger.error('Non-existing article accessed')
             return render_template('404.html'), 404
         else:
-            app.logger.info('{0} : Article "{1}" retrieved !'.format(
-                datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-                post['title']
-                )
-            )
+            app.logger.info('Article "{0}" retrieved !'.format(post['title']))
             return render_template('post.html', post=post)
 
 # Define the About Us page
 @app.route('/about')
 def about():
-    app.logger.info('{0} : `About Us` page retrieved successfully'.format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
+    app.logger.info('About Us` page retrieved successfully')
     return render_template('about.html')
 
 # Define the post creation functionality 
@@ -70,11 +67,7 @@ def create():
                         connection = get_db_connection()
                         connection.execute('INSERT INTO posts (title, content) VALUES (?, ?)',
                                                  (title, content))
-                        app.logger.info('{0} : New article with title "{1}" created !'.format(
-                            datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-                            title
-                            )
-                        )
+                        app.logger.info('New article with title "{0}" created !'.format(title))
                         connection.commit()
                         connection.close()
 
@@ -94,14 +87,14 @@ def healthcheck():
             status = 200,
             mimetype = 'application/json'
             )
-        app.logger.info('{0} : Health status successful'.format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
+        app.logger.info('Health status successful')
     except Exception:
         response = app.response_class(
             response = json.dumps({"result":"NOT OK - Unhealthy"}),
             status = 500,
             mimetype = 'application/json'
             )
-        app.logger.info('{0} : Health status Unsuccessful'.format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
+        app.logger.info('Health status Unsuccessful')
     return response
 
 
@@ -117,12 +110,19 @@ def metrics():
                 mimetype='application/json'
             )
 
-        ## logging
-    app.logger.info('{0} : Metrics request successful'.format(datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
+    app.logger.info('Metrics request successful')
     return response 
         
 
 # start the application on port 3111
 if __name__ == "__main__":
-     logging.basicConfig(filemode='w',level=logging.DEBUG)
+     logger = logging.getLogger(__name__) 
+     stdout_handler = logging.StreamHandler(sys.stdout)
+     stdout_handler.setLevel(logging.DEBUG)
+     stderr_handler = logging.StreamHandler(sys.stderr)
+     stderr_handler.setLevel(logging.ERROR)
+     handlers = [stderr_handler, stdout_handler]
+     for handler in handlers:
+        logger.addHandler(handler)
+     logging.basicConfig(format='%(asctime)s : %(levelname)s ::  %(message)s',datefmt='%d-%m-%Y , %H:%M:%S', level=logging.DEBUG)
      app.run(host='0.0.0.0', port='3111')
