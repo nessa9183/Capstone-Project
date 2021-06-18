@@ -1,0 +1,9 @@
+apiVersion: v1
+name: techtrends
+description: Install the TechTrends Application Deployment
+keywords:
+- techtrends
+version: 1.0.0
+maintainers:
+- name: shubhamkandwal
+- email: shubhamkandwal02@gmail.com
