@@ -26,12 +26,7 @@ spec:
         - containerPort: {{ .Values.containerPort }}
           protocol: TCP
         resources:
-          requests:
-            memory: {{ .Values.resources.requests.memory }}
-            CPU: {{ .Values.resources.requests.CPU }}
-          limits:
-            memory: {{ .Values.resources.limits.memory }}
-            CPU: {{ .Values.resources.limits.CPU }}
+{{toYaml .Values.resources | indent 12 }}
         livenessProbe:
           httpGet:
             path: {{ .Values.livenessProbe.path }}
