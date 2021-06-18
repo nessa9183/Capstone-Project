@@ -28,4 +28,4 @@ livenessProbe:
   path: /healthz
 
 readinessProbe:
-  path: /heathz
+  path: /healthz
